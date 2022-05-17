@@ -79,7 +79,6 @@ class Load_object:
     def change_orientation(self, name, how, degrees, degrees2=None):
         position = self.objects_names.index(name)
         radians = math.radians(degrees)
-        radians2 = math.radians(degrees2)
         if how == 'X':
             rot = pyrr.Matrix44.from_x_rotation(radians)
             model = pyrr.matrix44.multiply(rot, self.objects[position].coordinates)
@@ -89,6 +88,7 @@ class Load_object:
             model = pyrr.matrix44.multiply(rot, self.objects[position].coordinates)
             return model
         elif how == 'XY':
+            radians2 = math.radians(degrees2)
             rot_x = pyrr.Matrix44.from_x_rotation(radians)
             rot_y = pyrr.Matrix44.from_y_rotation(radians2)
             rot = pyrr.matrix44.multiply(rot_x, rot_y)
