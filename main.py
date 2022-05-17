@@ -182,6 +182,7 @@ view_loc = glGetUniformLocation(shader, "view")
 
 glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection)
 
+# ustawienia muzyki
 # mixer.init()
 # music = mixer.Sound('music/young_and_beautiful.mp3')
 # music.play()
