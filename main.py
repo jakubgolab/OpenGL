@@ -76,7 +76,7 @@ def mouse_look_clb(window, xpos, ypos):
 
     cam.process_mouse_movement(xoffset, yoffset)
 
-
+# shaders
 vertex_src = """
 # version 330
 
