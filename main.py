@@ -15,7 +15,7 @@ lastX, lastY = WIDTH / 2, HEIGHT / 2
 first_mouse = True
 left, right, forward, backward = False, False, False, False
 
-
+# ładowanie
 loader = Load_object()
 
 
