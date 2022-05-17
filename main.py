@@ -153,6 +153,7 @@ glfw.set_input_mode(window, glfw.CURSOR, glfw.CURSOR_DISABLED)
 # make the context current
 glfw.make_context_current(window)
 
+# Tutaj dodajemy obiekty
 loader.add_object("cube1", "texture/lana.png", "objects/cube.obj", [26, 4, 1])
 loader.add_object("cube2", "texture/lana_del_rey.jpg", "objects/cube.obj", [36, 4, 10])
 loader.add_object("floor", "texture/floor3.png", "objects/floor2.obj", [0, 0, 0])
