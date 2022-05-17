@@ -8,7 +8,7 @@ from camera import Camera
 from Sound import Sound
 from load_obj import Load_object
 
-# Camera
+
 cam = Camera()
 WIDTH, HEIGHT = 1280, 720
 lastX, lastY = WIDTH / 2, HEIGHT / 2
@@ -183,7 +183,7 @@ view_loc = glGetUniformLocation(shader, "view")
 
 glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection)
 
-# ustawienia muzyki
+
 # mixer.init()
 # music = mixer.Sound('music/young_and_beautiful.mp3')
 # music.play()
