@@ -161,7 +161,7 @@ loader.add_object("ceiling", "texture/ceiling.png", "objects/ceiling.obj", [0, 0
 loader.add_object("meta_kula", "texture/meta_kula.png", "objects/meta_kula.obj", [46, 4, 10])
 loader.add_object("grass", "texture/grass2.png", "objects/grass.obj", [0, -0.01, 0])
 # loader.add_object("tree", "texture/leaves2.png", "objects/tree.obj", [60, 0, 30])
-loader.add_object("Bench_ok", "texture/bench_2.tga", "objects/bench_2.obj", [60, 0, 10])
+# loader.add_object("Bench_ok", "texture/bench_2.tga", "objects/bench_2.obj", [60, 0, 10])
 
 loader.send_to_GPU()
 
@@ -230,7 +230,7 @@ while not glfw.window_should_close(window):
     # loader.draw("tree", model_loc)
 
     #draw the bench
-    loader.draw("Bench_ok", model_loc, model_bench)
+    # loader.draw("Bench_ok", model_loc, model_bench)
 
     glfw.swap_buffers(window)
 
