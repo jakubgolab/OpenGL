@@ -8,7 +8,7 @@ from camera import Camera
 from Sound import Sound
 from load_obj import Load_object
 
-
+# camera
 cam = Camera()
 WIDTH, HEIGHT = 1280, 720
 lastX, lastY = WIDTH / 2, HEIGHT / 2
