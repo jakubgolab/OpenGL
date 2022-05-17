@@ -1,3 +1,5 @@
+import math
+
 import TextureLoader
 from ObjLoader import ObjLoader
 import glfw
@@ -73,3 +75,22 @@ class Load_object:
             glBindTexture(GL_TEXTURE_2D, self.textures[position])
             glUniformMatrix4fv(model_loc, 1, GL_FALSE, model_pos)
             glDrawArrays(GL_TRIANGLES, 0, len(self.objects[position].indices))
+
+    def change_orientation(self, name, how, degrees, degrees2=None):
+        position = self.objects_names.index(name)
+        radians = math.radians(degrees)
+        radians2 = math.radians(degrees2)
+        if how == 'X':
+            rot = pyrr.Matrix44.from_x_rotation(radians)
+            model = pyrr.matrix44.multiply(rot, self.objects[position].coordinates)
+            return model
+        elif how == 'Y':
+            rot = pyrr.Matrix44.from_y_rotation(radians)
+            model = pyrr.matrix44.multiply(rot, self.objects[position].coordinates)
+            return model
+        elif how == 'XY':
+            rot_x = pyrr.Matrix44.from_x_rotation(radians)
+            rot_y = pyrr.Matrix44.from_y_rotation(radians2)
+            rot = pyrr.matrix44.multiply(rot_x, rot_y)
+            model = pyrr.matrix44.multiply(rot, self.objects[position].coordinates)
+            return model

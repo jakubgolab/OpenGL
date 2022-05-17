@@ -8,12 +8,14 @@ from camera import Camera
 from Sound import Sound
 from load_obj import Load_object
 
-# camera
+
 cam = Camera()
 WIDTH, HEIGHT = 1280, 720
 lastX, lastY = WIDTH / 2, HEIGHT / 2
 first_mouse = True
 left, right, forward, backward = False, False, False, False
+velocity = 0.15 # prędkość poruszania się po mapie
+sound_enabled = False
 
 
 loader = Load_object()
@@ -43,20 +45,19 @@ def key_input_clb(window, key, scancode, action, mode):
         right = False
     # if key in [glfw.KEY_W, glfw.KEY_S, glfw.KEY_D, glfw.KEY_A] and action == glfw.RELEASE:
     #     left, right, forward, backward = False, False, False, False
-    if key == glfw.KEY_L and action == glfw.PRESS:
+    if key == glfw.KEY_L and action == glfw.PRESS: # ustalenie aktualnej pozycji
         print_location(cam.get_position())
-
 
 # do the movement, call this function in the main loop
 def do_movement():
     if left:
-        cam.process_keyboard("LEFT", 0.15)
+        cam.process_keyboard("LEFT", velocity)
     if right:
-        cam.process_keyboard("RIGHT", 0.15)
+        cam.process_keyboard("RIGHT", velocity)
     if forward:
-        cam.process_keyboard("FORWARD", 0.15)
+        cam.process_keyboard("FORWARD", velocity)
     if backward:
-        cam.process_keyboard("BACKWARD", 0.15)
+        cam.process_keyboard("BACKWARD", velocity)
 
 
 # the mouse position callback function
@@ -162,8 +163,7 @@ loader.add_object("wall", "texture/wall.jpg", "objects/wall.obj", [0, 0, 0])
 loader.add_object("ceiling", "texture/ceiling.png", "objects/ceiling.obj", [0, 0, 0])
 loader.add_object("meta_kula", "texture/meta_kula.png", "objects/meta_kula.obj", [46, 4, 10])
 loader.add_object("grass", "texture/grass2.png", "objects/grass.obj", [0, -0.01, 0])
-# loader.add_object("tree", "texture/leaves2.png", "objects/tree.obj", [60, 0, 30])
-# loader.add_object("Bench_ok", "texture/bench_2.tga", "objects/bench_2.obj", [60, 0, 10])
+loader.add_object("Bench", "texture/bench.tga", "objects/bench.obj", [60, 0, 10])
 
 loader.send_to_GPU()
 
@@ -183,21 +183,21 @@ view_loc = glGetUniformLocation(shader, "view")
 
 glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection)
 
+if sound_enabled == True:
+    mixer.init()
+    music = mixer.Sound('music/young_and_beautiful.mp3')
+    music.play()
+    sound = Sound(music, pyrr.Vector3([36, 4, 10]), cam.get_position())
 
-# mixer.init()
-# music = mixer.Sound('music/young_and_beautiful.mp3')
-# music.play()
-# sound = Sound(music, pyrr.Vector3([36, 4, 10]), cam.get_position())
-
-rot_y_bench = pyrr.Matrix44.from_x_rotation(2)
-model_bench = pyrr.matrix44.multiply(rot_y_bench, pyrr.matrix44.create_from_translation(pyrr.Vector3([[60, 0, 10]])))
 
 # the main application loop
 while not glfw.window_should_close(window):
     glfw.poll_events()
     do_movement()
-    # sound.update_pos(cam.get_position())
-    # sound.change_volume()
+
+    if sound_enabled == True:
+        sound.update_pos(cam.get_position())
+        sound.change_volume()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
@@ -229,11 +229,8 @@ while not glfw.window_should_close(window):
     #draw the grass
     loader.draw("grass", model_loc)
 
-    #draw the tree
-    # loader.draw("tree", model_loc)
-
     #draw the bench
-    # loader.draw("Bench_ok", model_loc, model_bench)
+    loader.draw("Bench", model_loc)
 
     glfw.swap_buffers(window)
 
