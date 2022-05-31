@@ -212,25 +212,25 @@ while not glfw.window_should_close(window):
     # draw the cube
     loader.draw("cube1", model_loc, model)
 
-    # draw the floor
+    # podłoga
     loader.draw("floor", model_loc)
 
     # draw the cube 2
     loader.draw("cube2", model_loc, model2)
 
-    # draw the wall
+    # ściany
     loader.draw("wall", model_loc)
 
-    # draw the ceiling
+    # sufit
     loader.draw("ceiling", model_loc)
 
-    # draw the meta_kula
+    # meta kula
     loader.draw("meta_kula", model_loc)
 
-    #draw the grass
+    # trawa
     loader.draw("grass", model_loc)
 
-    #draw the bench
+    # ławka zewnętrzna
     loader.draw("Bench", model_loc, loader.change_orientation("Bench", 'Y', 90))
 
     glfw.swap_buffers(window)
