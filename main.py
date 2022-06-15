@@ -165,6 +165,7 @@ loader.add_object("ceiling", "texture/ceiling.png", "objects/ceiling.obj", [0, 0
 loader.add_object("meta_kula", "texture/meta_kula.png", "objects/meta_kula.obj", [46, 4, 10])
 loader.add_object("grass", "texture/grass2.png", "objects/grass.obj", [0, -0.01, 0])
 loader.add_object("Bench", "texture/floor3.png", "objects/outdoor_bench.obj", [23, 0, 7])
+loader.add_object("LawkaSciana", "texture/Marmur3.jpg", "objects/lawkaScianaSmall.obj", [48, 0, 33])
 
 loader.send_to_GPU()
 
@@ -212,26 +213,29 @@ while not glfw.window_should_close(window):
     # draw the cube
     loader.draw("cube1", model_loc, model)
 
-    # draw the floor
+    # podłoga
     loader.draw("floor", model_loc)
 
     # draw the cube 2
     loader.draw("cube2", model_loc, model2)
 
-    # draw the wall
+    # ściany
     loader.draw("wall", model_loc)
 
-    # draw the ceiling
+    # sufit
     loader.draw("ceiling", model_loc)
 
-    # draw the meta_kula
+    # meta kula
     loader.draw("meta_kula", model_loc)
 
-    #draw the grass
+    # trawa
     loader.draw("grass", model_loc)
 
-    #draw the bench
+    # ławka zewnętrzna
     loader.draw("Bench", model_loc, loader.change_orientation("Bench", 'Y', 90))
+
+    # Ławka wewnętrzna ściana
+    loader.draw("LawkaSciana", model_loc, loader.change_orientation("LawkaSciana", "XY", 90, -90))
 
     glfw.swap_buffers(window)
 
