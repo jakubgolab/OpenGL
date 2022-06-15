@@ -3,13 +3,10 @@ from OpenGL.GL import *
 from OpenGL.GL.shaders import compileProgram, compileShader
 import numpy as np
 import pyrr
-from ObjLoader import ObjLoader
-import TextureLoader
 from pygame import mixer
 from camera import Camera
 from Sound import Sound
 from load_obj import Load_object
-
 
 
 cam = Camera()
@@ -17,9 +14,12 @@ WIDTH, HEIGHT = 1280, 720
 lastX, lastY = WIDTH / 2, HEIGHT / 2
 first_mouse = True
 left, right, forward, backward = False, False, False, False
+velocity = 0.15 # prędkość poruszania się po mapie
+sound_enabled = False
 
 
 loader = Load_object()
+
 
 # the keyboard input callback
 def key_input_clb(window, key, scancode, action, mode):
@@ -45,18 +45,19 @@ def key_input_clb(window, key, scancode, action, mode):
         right = False
     # if key in [glfw.KEY_W, glfw.KEY_S, glfw.KEY_D, glfw.KEY_A] and action == glfw.RELEASE:
     #     left, right, forward, backward = False, False, False, False
-
+    if key == glfw.KEY_L and action == glfw.PRESS: # ustalenie aktualnej pozycji
+        print_location(cam.get_position())
 
 # do the movement, call this function in the main loop
 def do_movement():
     if left:
-        cam.process_keyboard("LEFT", 0.15)
+        cam.process_keyboard("LEFT", velocity)
     if right:
-        cam.process_keyboard("RIGHT", 0.15)
+        cam.process_keyboard("RIGHT", velocity)
     if forward:
-        cam.process_keyboard("FORWARD", 0.15)
+        cam.process_keyboard("FORWARD", velocity)
     if backward:
-        cam.process_keyboard("BACKWARD", 0.15)
+        cam.process_keyboard("BACKWARD", velocity)
 
 
 # the mouse position callback function
@@ -77,6 +78,7 @@ def mouse_look_clb(window, xpos, ypos):
     cam.process_mouse_movement(xoffset, yoffset)
 
 
+# shaders
 vertex_src = """
 # version 330
 
@@ -112,11 +114,15 @@ void main()
 }
 """
 
+
 # the window resize callback function
 def window_resize_clb(window, width, height):
     glViewport(0, 0, width, height)
     projection = pyrr.matrix44.create_perspective_projection_matrix(45, width / height, 0.1, 100)
     glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection)
+
+def print_location(position):
+    print(position)
 
 
 # initializing glfw library
@@ -150,135 +156,20 @@ glfw.set_input_mode(window, glfw.CURSOR, glfw.CURSOR_DISABLED)
 # make the context current
 glfw.make_context_current(window)
 
+# Tutaj dodajemy obiekty
 loader.add_object("cube1", "texture/lana.png", "objects/cube.obj", [26, 4, 1])
 loader.add_object("cube2", "texture/lana_del_rey.jpg", "objects/cube.obj", [36, 4, 10])
 loader.add_object("floor", "texture/floor3.png", "objects/floor2.obj", [0, 0, 0])
 loader.add_object("wall", "texture/wall.jpg", "objects/wall.obj", [0, 0, 0])
 loader.add_object("ceiling", "texture/ceiling.png", "objects/ceiling.obj", [0, 0, 0])
 loader.add_object("meta_kula", "texture/meta_kula.png", "objects/meta_kula.obj", [46, 4, 10])
-
-# cube_indices, cube_buffer = ObjLoader.load_model("objects/cube.obj")
-# cube_indices_2, cube_buffer_2 = ObjLoader.load_model("objects/cube.obj")
-# floor_indices, floor_buffer = ObjLoader.load_model("objects/floor2.obj")
-# wall_indices, wall_buffer = ObjLoader.load_model("objects/wall.obj")
-# ceiling_indices, ceiling_buffer = ObjLoader.load_model("objects/ceiling.obj")
-# meta_kula_indices, meta_kula_buffer = ObjLoader.load_model("objects/meta_kula.obj")
-#
-# VAO = glGenVertexArrays(6) # ilość obiektów
-# VBO = glGenBuffers(6) # ilość obiektów
-
-# # cube VAO
-# glBindVertexArray(VAO[0])
+loader.add_object("grass", "texture/grass2.png", "objects/grass.obj", [0, -0.01, 0])
+loader.add_object("Bench", "texture/floor3.png", "objects/outdoor_bench.obj", [23, 0, 7])
+loader.add_object("LawkaSciana", "texture/Marmur3.jpg", "objects/lawkaScianaSmall.obj", [48, 0, 33])
 
 loader.send_to_GPU()
 
 shader = compileProgram(compileShader(vertex_src, GL_VERTEX_SHADER), compileShader(fragment_src, GL_FRAGMENT_SHADER))
-
-
-# # cube Vertex Buffer Object
-# glBindBuffer(GL_ARRAY_BUFFER, VBO[0])
-# glBufferData(GL_ARRAY_BUFFER, cube_buffer.nbytes, cube_buffer, GL_STATIC_DRAW)
-#
-# # cube vertices
-# glEnableVertexAttribArray(0)
-# glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, cube_buffer.itemsize * 8, ctypes.c_void_p(0))
-# # cube textures
-# glEnableVertexAttribArray(1)
-# glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, cube_buffer.itemsize * 8, ctypes.c_void_p(12))
-# # cube normals
-# glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, cube_buffer.itemsize * 8, ctypes.c_void_p(20))
-# glEnableVertexAttribArray(2)
-#
-#
-#
-# # floor VAO
-# glBindVertexArray(VAO[1])
-# # floor Vertex Buffer Object
-# glBindBuffer(GL_ARRAY_BUFFER, VBO[1])
-# glBufferData(GL_ARRAY_BUFFER, floor_buffer.nbytes, floor_buffer, GL_STATIC_DRAW)
-#
-# # floor vertices
-# glEnableVertexAttribArray(0)
-# glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, floor_buffer.itemsize * 8, ctypes.c_void_p(0))
-# # floor textures
-# glEnableVertexAttribArray(1)
-# glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, floor_buffer.itemsize * 8, ctypes.c_void_p(12))
-# # floor normals
-# glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, floor_buffer.itemsize * 8, ctypes.c_void_p(20))
-# glEnableVertexAttribArray(2)
-#
-# # cube VAO
-# glBindVertexArray(VAO[2])
-#
-# # cube2 Vertex Buffer Object
-# glBindBuffer(GL_ARRAY_BUFFER, VBO[2])
-# glBufferData(GL_ARRAY_BUFFER, cube_buffer_2.nbytes, cube_buffer_2, GL_STATIC_DRAW)
-#
-# # cube2 vertices
-# glEnableVertexAttribArray(0)
-# glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, cube_buffer_2.itemsize * 8, ctypes.c_void_p(0))
-# # cube2 textures
-# glEnableVertexAttribArray(1)
-# glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, cube_buffer_2.itemsize * 8, ctypes.c_void_p(12))
-# # cube2 normals
-# glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, cube_buffer_2.itemsize * 8, ctypes.c_void_p(20))
-# glEnableVertexAttribArray(2)
-#
-# # wall VAO
-# glBindVertexArray(VAO[3])
-# # wall Vertex Buffer Object
-# glBindBuffer(GL_ARRAY_BUFFER, VBO[3])
-# glBufferData(GL_ARRAY_BUFFER, wall_buffer.nbytes, wall_buffer, GL_STATIC_DRAW)
-#
-# # wall vertices
-# glEnableVertexAttribArray(0)
-# glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, wall_buffer.itemsize * 8, ctypes.c_void_p(0))
-# # wall textures
-# glEnableVertexAttribArray(1)
-# glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, wall_buffer.itemsize * 8, ctypes.c_void_p(12))
-# # wall normals
-# glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, wall_buffer.itemsize * 8, ctypes.c_void_p(20))
-# glEnableVertexAttribArray(2)
-#
-# # ceiling VAO
-# glBindVertexArray(VAO[4])
-# # ceiling Vertex Buffer Object
-# glBindBuffer(GL_ARRAY_BUFFER, VBO[4])
-# glBufferData(GL_ARRAY_BUFFER, ceiling_buffer.nbytes, ceiling_buffer, GL_STATIC_DRAW)
-#
-# # ceiling vertices
-# glEnableVertexAttribArray(0)
-# glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, ceiling_buffer.itemsize * 8, ctypes.c_void_p(0))
-# # ceiling textures
-# glEnableVertexAttribArray(1)
-# glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, ceiling_buffer.itemsize * 8, ctypes.c_void_p(12))
-# # ceiling normals
-# glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, ceiling_buffer.itemsize * 8, ctypes.c_void_p(20))
-# glEnableVertexAttribArray(2)
-#
-# # meta_kula VAO
-# glBindVertexArray(VAO[5])
-# # meta_kula Vertex Buffer Object
-# glBindBuffer(GL_ARRAY_BUFFER, VBO[5])
-# glBufferData(GL_ARRAY_BUFFER, meta_kula_buffer.nbytes, meta_kula_buffer, GL_STATIC_DRAW)
-#
-# # meta_kula vertices
-# glEnableVertexAttribArray(0)
-# glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, meta_kula_buffer.itemsize * 8, ctypes.c_void_p(0))
-# # meta_kula textures
-# glEnableVertexAttribArray(1)
-# glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, meta_kula_buffer.itemsize * 8, ctypes.c_void_p(12))
-# # meta_kula normals
-# glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, meta_kula_buffer.itemsize * 8, ctypes.c_void_p(20))
-# glEnableVertexAttribArray(2)
-#
-# textures = glGenTextures(6)
-# TextureLoader.load_texture("texture/lana.png", textures[0])
-# TextureLoader.load_texture("texture/floor3.png", textures[1])
-# TextureLoader.load_texture("texture/lana_del_rey.jpg", textures[2])
-# TextureLoader.load_texture("texture/wall.jpg", textures[3])
-# TextureLoader.load_texture("texture/ceiling.png", textures[4])
-# TextureLoader.load_texture("texture/meta_kula.png", textures[5])
 
 glUseProgram(shader)
 glClearColor(1.0, 1.0, 1.0, 1)
@@ -287,12 +178,6 @@ glEnable(GL_BLEND)
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 projection = pyrr.matrix44.create_perspective_projection_matrix(45, WIDTH / HEIGHT, 0.1, 100)
-# cube_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([26, 4, 1]))
-# cube2pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([36, 4, 10]))
-# floor_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, 0, 0]))
-# wall_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, 0, 0]))
-# ceiling_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, 0, 0]))
-# meta_kula_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([46, 4, 10]))
 
 model_loc = glGetUniformLocation(shader, "model")
 proj_loc = glGetUniformLocation(shader, "projection")
@@ -300,17 +185,21 @@ view_loc = glGetUniformLocation(shader, "view")
 
 glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection)
 
-mixer.init()
-music = mixer.Sound('music/young_and_beautiful.mp3')
-music.play()
-sound = Sound(music, pyrr.Vector3([36, 4, 10]), cam.get_position())
+if sound_enabled == True:
+    mixer.init()
+    music = mixer.Sound('music/young_and_beautiful.mp3')
+    music.play()
+    sound = Sound(music, pyrr.Vector3([36, 4, 10]), cam.get_position())
+
 
 # the main application loop
 while not glfw.window_should_close(window):
     glfw.poll_events()
     do_movement()
-    sound.update_pos(cam.get_position())
-    sound.change_volume()
+
+    if sound_enabled == True:
+        sound.update_pos(cam.get_position())
+        sound.change_volume()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
@@ -324,20 +213,29 @@ while not glfw.window_should_close(window):
     # draw the cube
     loader.draw("cube1", model_loc, model)
 
-    # draw the floor
+    # podłoga
     loader.draw("floor", model_loc)
 
     # draw the cube 2
     loader.draw("cube2", model_loc, model2)
 
-    # draw the wall
+    # ściany
     loader.draw("wall", model_loc)
 
-    # draw the ceiling
+    # sufit
     loader.draw("ceiling", model_loc)
 
-    # draw the meta_kula
+    # meta kula
     loader.draw("meta_kula", model_loc)
+
+    # trawa
+    loader.draw("grass", model_loc)
+
+    # ławka zewnętrzna
+    loader.draw("Bench", model_loc, loader.change_orientation("Bench", 'Y', 90))
+
+    # Ławka wewnętrzna ściana
+    loader.draw("LawkaSciana", model_loc, loader.change_orientation("LawkaSciana", "XY", 90, -90))
 
     glfw.swap_buffers(window)
 
