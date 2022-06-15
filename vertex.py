@@ -106,3 +106,15 @@ grass_vertices = np.array(grass_vertices, dtype=np.float32)
 grass_indices = np.array(grass_indices, dtype=np.uint32)
 
 convert(grass_vertices, grass_indices, 'grass')
+
+frame1_vertices = [-100, 0, -100, 0, 0,
+                  100, 0, -100, 50, 0,
+                  -100, 0, 100, 0, 50,
+                  100, 0, 100, 50, 50]
+
+frame1_indices = [0, 1, 2, 1, 2, 3]
+
+frame1_vertices = np.array(frame1_vertices, dtype=np.float32)
+frame1_indices = np.array(frame1_indices, dtype=np.uint32)
+
+convert(frame1_vertices, frame1_indices, 'frame1')
