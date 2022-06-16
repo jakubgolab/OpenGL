@@ -1,6 +1,3 @@
-import pyrr
-from pyrr import *
-from pygame import mixer
 from scipy.spatial import distance
 
 class Sound():

@@ -1,11 +1,7 @@
 import math
-
 import TextureLoader
 from ObjLoader import ObjLoader
-import glfw
 from OpenGL.GL import *
-from OpenGL.GL.shaders import compileProgram, compileShader
-import numpy as np
 import pyrr
 
 class Object:

@@ -1,7 +1,6 @@
 import glfw
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileProgram, compileShader
-import numpy as np
 import pyrr
 from pygame import mixer
 from camera import Camera
@@ -21,7 +20,7 @@ sound_enabled = True
 loader = Load_object()
 
 
-# the keyboard input callback
+# Odczytywanie sygnałów z klawiatury
 def key_input_clb(window, key, scancode, action, mode):
     global left, right, forward, backward
     if key == glfw.KEY_ESCAPE and action == glfw.PRESS:
@@ -43,12 +42,10 @@ def key_input_clb(window, key, scancode, action, mode):
         right = True
     elif key == glfw.KEY_D and action == glfw.RELEASE:
         right = False
-    # if key in [glfw.KEY_W, glfw.KEY_S, glfw.KEY_D, glfw.KEY_A] and action == glfw.RELEASE:
-    #     left, right, forward, backward = False, False, False, False
     if key == glfw.KEY_L and action == glfw.PRESS: # ustalenie aktualnej pozycji
         print_location(cam.get_position())
 
-# do the movement, call this function in the main loop
+# Wykonywanie ruchu po przestrzeni
 def do_movement():
     if left:
         cam.process_keyboard("LEFT", velocity)
@@ -60,7 +57,7 @@ def do_movement():
         cam.process_keyboard("BACKWARD", velocity)
 
 
-# the mouse position callback function
+# Obsługa sygnału z myszy
 def mouse_look_clb(window, xpos, ypos):
     global first_mouse, lastX, lastY
 
@@ -130,7 +127,7 @@ void main()
 """
 
 
-# the window resize callback function
+# Skalowanie ekranu
 def window_resize_clb(window, width, height):
     glViewport(0, 0, width, height)
     projection = pyrr.matrix44.create_perspective_projection_matrix(45, width / height, 0.1, 100)
@@ -140,46 +137,42 @@ def print_location(position):
     print(position)
 
 
-# initializing glfw library
+# Inicjalizacja biblioteki glfw
 if not glfw.init():
     raise Exception("glfw can not be initialized!")
 
-# creating the window
+# Utworzenie okna
 glfw.window_hint(glfw.CONTEXT_VERSION_MAJOR, 3)
 glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 3)
 glfw.window_hint(glfw.OPENGL_FORWARD_COMPAT, GL_TRUE)
 glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
 window = glfw.create_window(WIDTH, HEIGHT, "My OpenGL window", None, None)
 
-# check if window was created
+# Sprawdzenie czy okno zostało utworzone
 if not window:
     glfw.terminate()
     raise Exception("glfw window can not be created!")
 
-# set window's position
+# Ustawienie pozycji okna
 glfw.set_window_pos(window, 100, 100)
 
 
 
-# set the callback function for window resize
+# Obsługa kamery
 glfw.set_window_size_callback(window, window_resize_clb)
-# set the mouse position callback
 glfw.set_cursor_pos_callback(window, mouse_look_clb)
-# set the keyboard input callback
 glfw.set_key_callback(window, key_input_clb)
-# capture the mouse cursor
 glfw.set_input_mode(window, glfw.CURSOR, glfw.CURSOR_DISABLED)
 
-# make the context current
+
 glfw.make_context_current(window)
 
-# Tutaj dodajemy obiekty
+# Dodawanie obiektów
 loader.add_object("cube2", "texture/lana_del_rey.jpg", "objects/cube2.obj", [65.5, 7, 75])
 loader.add_object("floor", "texture/floor3.png", "objects/floor2.obj", [0, 0, 0])
 loader.add_object("wall", "texture/wall.jpg", "objects/wall.obj", [0, 0, 0])
 loader.add_object("ceiling", "texture/sufit6.jpg", "objects/ceiling.obj", [0, 0, 0])
 loader.add_object("grass", "texture/grass2.png", "objects/grass.obj", [0, -0.01, 0])
-# loader.add_object("Bench", "texture/floor3.png", "objects/outdoor_bench.obj", [23, 0, 7])
 loader.add_object("LawkaSciana", "texture/Marmur3.jpg", "objects/lawkaScianaSmall.obj", [26.75, 0, 42])
 loader.add_object("duze_skrzypce", "texture/pictures/5.jpg", "objects/frame1.obj", [0, 0, 0])
 loader.add_object("maly_pan", "texture/pictures/4.jpg", "objects/frame2.obj", [0, 0, 0])
@@ -207,8 +200,10 @@ loader.add_object("bench_outside", "texture/hipster.jpg", "objects/bench.obj", [
 loader.add_object("bench_outside2", "texture/hipster.jpg", "objects/bench.obj", [53, 0, 25])
 loader.add_object("statue", "texture/statue.jpg", "objects/statue.obj", [37.5, 0, 97])
 
+# Przesłanie przetworzonych obiektów do GPU
 loader.send_to_GPU()
 
+# Kompilacja shadera
 shader = compileProgram(compileShader(vertex_src, GL_VERTEX_SHADER), compileShader(fragment_src, GL_FRAGMENT_SHADER))
 
 glUseProgram(shader)
@@ -223,13 +218,15 @@ model_loc = glGetUniformLocation(shader, "model")
 proj_loc = glGetUniformLocation(shader, "projection")
 view_loc = glGetUniformLocation(shader, "view")
 
+
+# Ustawienie światła
 lightColor = pyrr.Vector4([1.0, 1.0, 1.0, 1.0])
 lightPosition = pyrr.Vector3([0.0, 0.0, 0.0])
 glUniform4f(glGetUniformLocation(shader, "lightColor"), lightColor[0], lightColor[1], lightColor[2], lightColor[3])
-# glUniform3f(glGetUniformLocation(shader, "lightPos"), lightPosition[0], lightPosition[1], lightPosition[2])
 
 glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection)
 
+# Obsługa dźwięku
 if sound_enabled == True:
     mixer.init()
     music = mixer.Sound('music/young_and_beautiful.mp3')
@@ -237,7 +234,7 @@ if sound_enabled == True:
     sound = Sound(music, pyrr.Vector3([65.5, 7, 75]), cam.get_position())
 
 
-# the main application loop
+# Pętla główna
 while not glfw.window_should_close(window):
     glfw.poll_events()
     do_movement()
@@ -259,28 +256,13 @@ while not glfw.window_should_close(window):
     glUniform3f(glGetUniformLocation(shader, "camPos"), cam.camera_pos[0], cam.camera_pos[1], cam.camera_pos[2])
 
 
-    # podłoga
+    # Rysowanie obiektów
     loader.draw("floor", model_loc)
-
-    # draw the cube 2
     loader.draw("cube2", model_loc, model2)
-
-    # ściany
     loader.draw("wall", model_loc)
-
-    # sufit
     loader.draw("ceiling", model_loc)
-
-    # trawa
     loader.draw("grass", model_loc)
-
-    # ławka zewnętrzna
-    # loader.draw("Bench", model_loc, loader.change_orientation("Bench", 'Y', 90))
-
-    # Ławka wewnętrzna ściana
     loader.draw("LawkaSciana", model_loc, loader.change_orientation("LawkaSciana", "XY", 90, 90))
-
-
     loader.draw("duze_skrzypce", model_loc)
     loader.draw("maly_pan", model_loc)
     loader.draw("instrumenty", model_loc)
@@ -294,7 +276,6 @@ while not glfw.window_should_close(window):
     loader.draw("alejka", model_loc)
     loader.draw("mostek", model_loc)
     loader.draw("las", model_loc)
-
     loader.draw("drzwi", model_loc)
     loader.draw("drzwiz", model_loc)
     loader.draw("lawka_srodek", model_loc, loader.change_orientation("lawka_srodek", 'X', 90))
@@ -310,5 +291,5 @@ while not glfw.window_should_close(window):
 
     glfw.swap_buffers(window)
 
-# terminate glfw, free up allocated resources
+# Zamykanie aplikacji i zwalnianie zasobów
 glfw.terminate()

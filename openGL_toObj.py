@@ -1,47 +1,3 @@
-import numpy as np
-
-# współrzędne wierzchołków      # współrzędne textur
-vertices = [-0.5, -0.5,  0.5, 0.0, 0.0,
-             0.5, -0.5,  0.5, 1.0, 0.0,
-             0.5,  0.5,  0.5, 1.0, 1.0,
-            -0.5,  0.5,  0.5, 0.0, 1.0,
-
-            -0.5, -0.5, -0.5, 0.0, 0.0,
-             0.5, -0.5, -0.5, 1.0, 0.0,
-             0.5,  0.5, -0.5, 1.0, 1.0,
-            -0.5,  0.5, -0.5, 0.0, 1.0,
-
-             0.5, -0.5, -0.5, 0.0, 0.0,
-             0.5,  0.5, -0.5, 1.0, 0.0,
-             0.5,  0.5,  0.5, 1.0, 1.0,
-             0.5, -0.5,  0.5, 0.0, 1.0,
-
-            -0.5,  0.5, -0.5, 0.0, 0.0,
-            -0.5, -0.5, -0.5, 1.0, 0.0,
-            -0.5, -0.5,  0.5, 1.0, 1.0,
-            -0.5,  0.5,  0.5, 0.0, 1.0,
-
-            -0.5, -0.5, -0.5, 0.0, 0.0,
-             0.5, -0.5, -0.5, 1.0, 0.0,
-             0.5, -0.5,  0.5, 1.0, 1.0,
-            -0.5, -0.5,  0.5, 0.0, 1.0,
-
-             0.5, 0.5, -0.5, 0.0, 0.0,
-            -0.5, 0.5, -0.5, 1.0, 0.0,
-            -0.5, 0.5,  0.5, 1.0, 1.0,
-             0.5, 0.5,  0.5, 0.0, 1.0]
-
-# Ponowne wykorzystanie wierzchołków
-indices = [ 0,  1,  2,  2,  3,  0,
-            4,  5,  6,  6,  7,  4,
-            8,  9, 10, 10, 11,  8,
-           12, 13, 14, 14, 15, 12,
-           16, 17, 18, 18, 19, 16,
-           20, 21, 22, 22, 23, 20]
-
-vertices = np.array(vertices, dtype=np.float32) # konwertowanie macierzy na macierz nunmpy
-indices = np.array(indices, dtype=np.uint32) # konwertowanie macierzy na macierz numpy
-
 
 def convert(vertices, indices, nazwa, normals = None):
     flag = False
@@ -109,5 +65,3 @@ def convert(vertices, indices, nazwa, normals = None):
                 file.write(" " + str(f+1) + "/" + str(f+1) + "/1\n")
                 iterator = 0
         file.close()
-
-# convert(vertices, indices, "cube")
