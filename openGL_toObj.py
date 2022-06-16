@@ -54,7 +54,7 @@ def convert(vertices, indices, nazwa, normals = None):
         print("Niepoprawny format danych wejściowych.")
         return 0
     else:
-        nazwa = nazwa + ".obj"
+        nazwa = "objects/" + nazwa + ".obj"
         file = open(nazwa, 'w')
         file.write("o " + nazwa.split(".")[0] + "\n") # nagłówek pliku obj
         iterator = 0
