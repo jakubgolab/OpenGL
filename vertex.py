@@ -105,16 +105,184 @@ grass_indices = [0, 1, 2, 1, 2, 3]
 grass_vertices = np.array(grass_vertices, dtype=np.float32)
 grass_indices = np.array(grass_indices, dtype=np.uint32)
 
-convert(grass_vertices, grass_indices, 'grass')
+# convert(grass_vertices, grass_indices, 'grass')
 
-frame1_vertices = [-100, 0, -100, 0, 0,
-                  100, 0, -100, 50, 0,
-                  -100, 0, 100, 0, 50,
-                  100, 0, 100, 50, 50]
+frame1_vertices = [74.50, 7, 90, 1, 0, #A
+                  74.50, 15, 90, 1, 1, #B
+                  74.50, 7, 60, 0, 0,  #C
+                  74.50, 15, 60, 0, 1] #D
 
 frame1_indices = [0, 1, 2, 1, 2, 3]
 
 frame1_vertices = np.array(frame1_vertices, dtype=np.float32)
 frame1_indices = np.array(frame1_indices, dtype=np.uint32)
 
-convert(frame1_vertices, frame1_indices, 'frame1')
+# convert(frame1_vertices, frame1_indices, 'frame1')
+
+frame2_vertices = [70, 7, 50.5, 1, 0, #A
+                  70, 15, 50.5, 1, 1, #B
+                  65, 15, 50.50, 0, 1,  #C
+                  65, 7, 50.50, 0, 0] #D
+
+frame2_indices = [0, 1, 2, 3, 2, 0]
+
+frame2_vertices = np.array(frame2_vertices, dtype=np.float32)
+frame2_indices = np.array(frame2_indices, dtype=np.uint32)
+
+# convert(frame2_vertices, frame2_indices, 'frame2')
+
+frame3_vertices = [60, 7, 50.5, 1, 0, #A
+                  60, 15, 50.5, 1, 1, #B
+                  55, 15, 50.50, 0, 1,  #C
+                  55, 7, 50.50, 0, 0] #D
+
+frame3_indices = [0, 1, 2, 3, 2, 0]
+
+frame3_vertices = np.array(frame3_vertices, dtype=np.float32)
+frame3_indices = np.array(frame3_indices, dtype=np.uint32)
+
+# convert(frame3_vertices, frame3_indices, 'frame3')
+
+frame4_vertices = [55, 7, 99.5, 1, 0, #A
+                  55, 15, 99.5, 1, 1, #B
+                  60, 15, 99.5, 0, 1,  #C
+                  60, 7, 99.5, 0, 0] #D
+
+frame4_indices = [0, 1, 2, 3, 2, 0]
+
+frame4_vertices = np.array(frame4_vertices, dtype=np.float32)
+frame4_indices = np.array(frame4_indices, dtype=np.uint32)
+
+# convert(frame4_vertices, frame4_indices, 'frame4')
+
+frame5_vertices = [65, 7, 99.5, 1, 0, #A
+                  65, 15, 99.5, 1, 1, #B
+                  70, 15, 99.5, 0, 1,  #C
+                  70, 7, 99.5, 0, 0] #D
+
+frame5_indices = [0, 1, 2, 3, 2, 0]
+
+frame5_vertices = np.array(frame5_vertices, dtype=np.float32)
+frame5_indices = np.array(frame5_indices, dtype=np.uint32)
+
+# convert(frame5_vertices, frame5_indices, 'frame5')
+
+frame6_vertices =[49.5, 7, 40, 1, 0,
+                  49.5, 18, 40, 1, 1,
+                  49.5, 18, 10 , 0, 1,
+                  49.5, 7, 10, 0, 0]
+
+frame6_indices = [0, 1, 2, 3, 2, 0]
+
+frame6_vertices = np.array(frame6_vertices, dtype=np.float32)
+frame6_indices = np.array(frame6_indices, dtype=np.uint32)
+
+# convert(frame6_vertices, frame6_indices, 'frame6')
+
+frame7_vertices = [25.5, 7, 10, 1, 0,
+                   25.5, 15, 10, 1, 1,
+                   25.5, 15, 30, 0, 1,
+                   25.5, 7, 30, 0, 0]
+
+frame7_indices = [0, 1, 2, 3, 2, 0]
+
+frame7_vertices = np.array(frame7_vertices, dtype=np.float32)
+frame7_indices = np.array(frame7_indices, dtype=np.uint32)
+
+# convert(frame7_vertices, frame7_indices, 'frame7')
+
+frame8_vertices = [0.5, 7, 60, 1, 0,
+                  0.5, 15, 60, 1, 1,
+                  0.5, 15, 70, 0, 1,
+                  0.5, 7, 70, 0, 0]
+
+frame8_indices = [0, 1, 2, 3, 2, 0]
+
+frame8_vertices = np.array(frame8_vertices, dtype=np.float32)
+frame8_indices = np.array(frame8_indices, dtype=np.uint32)
+
+# convert(frame8_vertices, frame8_indices, 'frame8')
+
+frame9_vertices = [0.5, 7, 80, 1, 0,
+                  0.5, 15, 80, 1, 1,
+                  0.5, 15, 90, 0, 1,
+                  0.5, 7, 90, 0, 0]
+
+frame9_indices = [0, 1, 2, 3, 2, 0]
+
+frame9_vertices = np.array(frame9_vertices, dtype=np.float32)
+frame9_indices = np.array(frame9_indices, dtype=np.uint32)
+
+# convert(frame9_vertices, frame9_indices, 'frame9')
+
+frame10_vertices = [20, 7, 50.5, 1, 0,
+                  20, 15, 50.5, 1, 1,
+                  15, 15, 50.5, 0, 1,
+                  15, 7, 50.5, 0, 0]
+
+frame10_indices = [0, 1, 2, 3, 2, 0]
+
+frame10_vertices = np.array(frame10_vertices, dtype=np.float32)
+frame10_indices = np.array(frame10_indices, dtype=np.uint32)
+
+# convert(frame10_vertices, frame10_indices, 'frame10')
+
+frame11_vertices = [10, 7, 50.5, 1, 0,
+                  10, 15, 50.5, 1, 1,
+                  5, 15, 50.5, 0, 1,
+                  5, 7, 50.5, 0, 0]
+
+frame11_indices = [0, 1, 2, 3, 2, 0]
+
+frame11_vertices = np.array(frame11_vertices, dtype=np.float32)
+frame11_indices = np.array(frame11_indices, dtype=np.uint32)
+
+# convert(frame11_vertices, frame11_indices, 'frame11')
+
+frame12_vertices = [5, 7, 99.5, 1, 0,
+                  5, 15, 99.5, 1, 1,
+                  10, 15, 99.5, 0, 1,
+                  10, 7, 99.5, 0, 0]
+
+frame12_indices = [0, 1, 2, 3, 2, 0]
+
+frame12_vertices = np.array(frame12_vertices, dtype=np.float32)
+frame12_indices = np.array(frame12_indices, dtype=np.uint32)
+
+# convert(frame12_vertices, frame12_indices, 'frame12')
+
+frame13_vertices = [15, 7, 99.5, 1, 0,
+                  15, 15, 99.5, 1, 1,
+                  20, 15, 99.5, 0, 1,
+                  20, 7, 99.5, 0, 0]
+
+frame13_indices = [0, 1, 2, 3, 2, 0]
+
+frame13_vertices = np.array(frame13_vertices, dtype=np.float32)
+frame13_indices = np.array(frame13_indices, dtype=np.uint32)
+
+# convert(frame13_vertices, frame13_indices, 'frame13')
+
+drzwi_vertices = [32.5, 0, 0.5, 1, 0,
+                  32.5, 12, 0.5, 1, 1,
+                  42.5, 12, 0.5, 0, 1,
+                  42.5, 0, 0.5, 0, 0]
+
+drzwi_indices = [0, 1, 2, 3, 2, 0]
+
+drzwi_vertices = np.array(drzwi_vertices, dtype=np.float32)
+drzwi_indices = np.array(drzwi_indices, dtype=np.uint32)
+
+# convert(drzwi_vertices, drzwi_indices, 'drzwi')
+
+drzwiz_vertices = [32.5, 0, -0.5, 1, 0,
+                  32.5, 12, -0.5, 1, 1,
+                  42.5, 12, -0.5, 0, 1,
+                  42.5, 0, -0.5, 0, 0]
+
+drzwiz_indices = [0, 1, 2, 3, 2, 0]
+
+drzwiz_vertices = np.array(drzwiz_vertices, dtype=np.float32)
+drzwiz_indices = np.array(drzwiz_indices, dtype=np.uint32)
+
+# convert(drzwiz_vertices, drzwiz_indices, 'drzwiz')
